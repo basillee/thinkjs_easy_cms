@@ -28,6 +28,8 @@ thinkjs_easy_cms imac$ npm install
 think_admin.sql（管理员信息表）
 think_img_config.sql（图片管理表）
 think_interface_call_count.sql（接口统计表）
+```
+```
 步骤4:
 在config文件中配置你自己的七牛服务器的相关信息，下面分别对应开发环境和生产环境：
 src/config/config.development.js
