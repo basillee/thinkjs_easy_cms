@@ -12,14 +12,14 @@ thinkjs_easy_cms imac$ npm install
 ```
   mysql: {
     handle: mysql,
-    database: 'business_pros_thinkjs',//写上你自己的数据库名称
+    database: '',//写上你自己的数据库名称
     prefix: '',
     encoding: 'utf8',
     charset: 'utf8mb4',
     host: '127.0.0.1',
     port: '',
     user: 'root',//写上你自己的数据库用户名
-    password: 'ny7473528',//写上你自己的数据库密码
+    password: '',//写上你自己的数据库密码
     dateStrings: true
   }
 ```
