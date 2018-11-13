@@ -1,0 +1,22 @@
+{
+    "version": 3,
+    "sources": [
+        "../../src/controller/index.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "utils",
+        "module",
+        "exports",
+        "indexAction",
+        "interfaceCallCount",
+        "const_qrcode_querySingleQrcodeUrl",
+        "display"
+    ],
+    "mappings": "AAAA,MAAMA,OAAOC,QAAQ,WAAR,CAAb;AACA,MAAMC,QAAQD,QAAQ,cAAR,CAAd;AACAE,OAAOC,OAAP,GAAiB,cAAcJ,IAAd,CAAmB;AAClCK,gBAAc;AACZH,UAAMI,kBAAN,CAAyBJ,MAAMK,iCAA/B;AACA,WAAO,KAAKC,OAAL,EAAP;AACD;AAJiC,CAApC",
+    "file": "../../src/controller/index.js",
+    "sourcesContent": [
+        "const Base = require('./base.js');\nconst utils = require('./util/utils');\nmodule.exports = class extends Base {\n  indexAction() {\n    utils.interfaceCallCount(utils.const_qrcode_querySingleQrcodeUrl);\n    return this.display();\n  }\n};\n"
+    ]
+}

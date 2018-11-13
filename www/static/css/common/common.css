@@ -1,0 +1,47 @@
+button {
+    height: 25px;
+    background-color: transparent;
+    padding: 5px;
+    margin: 10px;
+    width: 120px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 15px;
+}
+
+select{
+    height: 25px;
+    background-color: transparent;
+    padding: 5px;
+    margin: 10px;
+    width: 120px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 15px;
+}
+
+input{
+    height: 25px;
+    background-color: transparent;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 16px;
+    text-align: center;
+    line-height: 15px; 
+}
+
+#page_title {
+    font-size: 25px;
+    text-align: center;
+    height: 35px;
+    width: 100%;
+    line-height: 35px;
+    border-bottom: 1px solid black;
+}
+
+/* 文字超长显示... */
+.line_limit_length{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

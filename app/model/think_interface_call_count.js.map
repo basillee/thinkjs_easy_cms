@@ -1,0 +1,17 @@
+{
+    "version": 3,
+    "sources": [
+        "../../src/model/think_interface_call_count.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model"
+    ],
+    "mappings": "AAAA;;;;AAIAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B,EAA3C",
+    "file": "../../src/model/think_interface_call_count.js",
+    "sourcesContent": [
+        "/**\n * 接口调用统计\n */\n\nmodule.exports = class extends think.Model {\n\n};"
+    ]
+}

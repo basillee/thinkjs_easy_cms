@@ -1,0 +1,28 @@
+{
+    "version": 3,
+    "sources": [
+        "../../src/model/think_admin.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "isAdminManager",
+        "userAccount",
+        "passWord",
+        "isEmpty",
+        "map",
+        "data",
+        "where",
+        "find",
+        "result",
+        "console",
+        "log"
+    ],
+    "mappings": ";;AAAAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;AACjCC,kBAAN,CAAqBC,WAArB,EAAiCC,QAAjC,EAA0C;AAAA;;AAAA;AACtC,gBAAGJ,MAAMK,OAAN,CAAcF,WAAd,KAA8BH,MAAMK,OAAN,CAAcD,QAAd,CAAjC,EAAyD;AACrD,uBAAO,KAAP;AACH;AACD,kBAAME,MAAM,EAACH,aAAYA,WAAb,EAAyBC,UAASA,QAAlC,EAAZ;AACA,gBAAIG,OAAO,MAAM,MAAKC,KAAL,CAAWF,GAAX,EAAgBG,IAAhB,EAAjB;;AAEA,gBAAIC,SAASV,MAAMK,OAAN,CAAcE,IAAd,CAAb;AACA,gBAAGG,MAAH,EAAW;AACPC,wBAAQC,GAAR,CAAY,yBAA0B,KAAtC;AACA,uBAAO,KAAP;AACH,aAHD,MAGK;AACDD,wBAAQC,GAAR,CAAY,yBAA0B,IAAtC;AACA,uBAAO,IAAP;AACH;AAdqC;AAezC;AAhBsC,CAA3C",
+    "file": "../../src/model/think_admin.js",
+    "sourcesContent": [
+        "module.exports = class extends think.Model {\n    async isAdminManager(userAccount,passWord){\n        if(think.isEmpty(userAccount) || think.isEmpty(passWord)){\n            return false;\n        }\n        const map = {userAccount:userAccount,passWord:passWord}\n        var data = await this.where(map).find();\n       \n        var result = think.isEmpty(data);\n        if(result) {\n            console.log('isAdminManager is = ' +  false);\n            return false;\n        }else{\n            console.log('isAdminManager is = ' +  true);\n            return true;\n        }\n    }\n};"
+    ]
+}

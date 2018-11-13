@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="jquery,ui,easy,easyui,web">
+    <title>广告开关配置</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/icon.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../../static/js/common/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../static/js/common/jquery.edatagrid.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#dg').edatagrid({
+                url: '/admin/commonapi/getAdConfigData',//查询数据列表
+                saveUrl: '/admin/commonapi/saveAdConfig',//新增保存一个数据
+                updateUrl: '/admin/commonapi/updateAdConfig',//更新一个数据
+                destroyUrl: '/admin/commonapi/deleteAdConfig'//删除一个数据
+            });
+
+            $('#dg').edatagrid({
+                onError: function (index, row) {
+                    alert(row.msg);
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <table id="dg" title="广告开关控制" style="width:100%;height:550px;margin: 16px;" toolbar="#toolbar" pagination="true" idField="id"
+        rownumbers="true" fitColumns="true" singleSelect="true">
+        <thead>
+            <tr>
+                <th field="id" width="25px" editor="{type:'numberbox',options:{required:false}}">ID</th>
+                <th field="pkg_name" editor="{type:'validatebox',options:{required:true}}">APP包名</th>
+                <th field="gdt_app_id" editor="{type:'validatebox',options:{required:false}}">GDTAPPID</th>
+                <th field="gdt_splash_id" width="50px" editor="{type:'validatebox',options:{required:false}}">开屏广告ID</th>
+                <th field="gdt_banner_id" width="50px" editor="{type:'validatebox',options:{required:false}}">Banner广告ID</th>
+                <th field="gdt_interstitial_id" width="100px" editor="{type:'validatebox',options:{required:false}}">插屏广告ID</th>
+                <th field="oppo_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">Oppo平台广告开启</th>
+                <th field="vivo_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">Vivo平台广告开启</th>
+                <th field="huawei_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">Huawei平台广告开启</th>
+                <th field="tencent_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">应用宝平台广告开启</th>
+                <th field="baidu_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">百度平台广告开启</th>
+                <th field="xiaomi_gdt_ad_is_open" width="50px" editor="{type:'validatebox',options:{required:false}}">小米平台广告开启</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="toolbar">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg').edatagrid('addRow')">新增</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg').edatagrid('destroyRow')">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg').edatagrid('saveRow')">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg').edatagrid('cancelRow')">取消</a>
+    </div>
+
+    <div style="width:100%;text-align:center; margin-top: 16px;">温馨提示：双击可编辑</div>
+</body>
+
+</html>

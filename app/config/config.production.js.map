@@ -1,0 +1,22 @@
+{
+    "version": 3,
+    "sources": [
+        "../../src/config/config.production.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "workers",
+        "port",
+        "qiniu",
+        "access_key",
+        "secret_key",
+        "bucket",
+        "domain"
+    ],
+    "mappings": "AAAA;AACAA,OAAOC,OAAP,GAAiB;AACfC,WAAS,CADM;AAEfC,QAAO,IAFQ;AAGfC,SAAM;AACJC,gBAAY,EADR,EACW;AACfC,gBAAY,EAFR,EAEW;AACfC,YAAQ,EAHJ,EAGO;AACXC,YAAQ,EAJJ,CAIO;AAJP;AAHS,CAAjB",
+    "file": "../../src/config/config.production.js",
+    "sourcesContent": [
+        "// production config, it will load in production enviroment\nmodule.exports = {\n  workers: 0,\n  port : 8361,\n  qiniu:{\n    access_key: '',//写上你自己七牛云的access_key\n    secret_key: '',//写上你自己七牛云的secret_key\n    bucket: '',//写上你自己七牛云的bucket\n    domain: '' //写上你自己七牛云的domain      \n  }\n};\n"
+    ]
+}

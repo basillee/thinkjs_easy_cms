@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理员操作页面</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            font-size: 12px;
+            width: 100%;
+            height: 100%;
+            font-family: "宋体", "微软雅黑";
+            /* overflow: hidden; */
+        }
+
+        ul,
+        li {
+            list-style: none;
+        }
+
+        a:link,
+        a:visited {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .user_info {
+            width: 182px;
+            height: 51px;
+            background: #316a91;
+            display: block;
+        }
+
+        .round_icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-left: 20px;
+        }
+
+        .admin_name{
+            width: 34px;
+            height: 34px;
+            overflow: hidden;
+            margin-left: 8px;
+            color: white;
+            line-height: 34px;
+            text-align: center;
+        }
+
+        .list {
+            width: 182px;
+            /* 宽度 */
+            height: 100%;
+            border-bottom: solid 1px #316a91;
+            margin: 0px auto 0 auto;
+            float: left;
+            background: #316a91;
+
+        }
+
+        .list ul li {
+            background-color: #467ca2;
+            border: solid 1px #316a91;
+            border-bottom: 0;
+
+        }
+
+        .list ul li a {
+            padding-left: 10px;
+            color: #fff;
+            font-size: 12px;
+            display: block;
+            font-weight: bold;
+            height: 36px;
+            line-height: 36px;
+            position: relative;
+
+        }
+
+        .list ul li .inactive {
+            /* background: url(images/off.png) no-repeat 184px center; */
+        }
+
+        .list ul li .inactives {
+            /* background: url(images/on.png) no-repeat 184px center; */
+        }
+
+        .list ul li ul {
+            display: inline;
+        }
+
+        .list ul li ul li {
+            border-left: 0;
+            border-right: 0;
+            background-color: #6196bb;
+            border-color: #467ca2;
+        }
+
+        .list ul li ul li ul {
+            display: none;
+        }
+
+        .list ul li ul li a {
+            padding-left: 20px;
+            width: 160px;
+        }
+
+        .list ul li ul li ul li {
+            background-color: #d6e6f1;
+            border-color: #6196bb;
+        }
+
+        .last {
+            background-color: #d6e6f1;
+            border-color: #6196bb;
+        }
+
+        .list ul li ul li ul li a {
+            color: #316a91;
+            padding-left: 20px;
+        }
+
+
+        #content {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.inactive').click(function () {
+                if ($(this).siblings('ul').css('display') == 'none') {
+                    $(this).addClass('inactives');
+                    $(this).siblings('ul').slideDown(100).children('li');
+                } else {
+                    $(this).removeClass('inactives');
+                    $(this).siblings('ul').slideUp(100);
+                }
+            })
+        });
+
+        function changeIframeSrc(url) {
+            $(document).ready(function () {
+                $('#rigthIframe').attr('src', url);
+            });
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <div class="user_info">
+        <img src='{{icon_url}}' class="round_icon" style="margin: 8px;">
+        <!-- <label class="admin_name">liyao</label> -->
+    </div>
+    <div class="list">
+        <ul class="yiji">
+            <li><a href="#" class="inactive active">通用模块操作配置</a>
+                <ul>
+                    <li><a href="#接口调用情况" onclick="changeIframeSrc('/admin/commonapi/interfaceAnalyze')">接口调用情况</a></li>
+                    <li><a href="#广告开关配置" onclick="changeIframeSrc('/admin/commonapi/adConfig')">广告开关配置</a></li>                   
+                    <li><a href="#H5模板类型配置">H5模板类型配置</a></li>
+                    <li><a href="#背景音乐配置">背景音乐配置</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="inactive active">THINKJS_EASY_CMS</a>
+                <ul>
+                    <li><a href="#图片上传" onclick="changeIframeSrc('/admin/imgapi/imgSayConfig')">图片配置</a></li>
+                </ul>
+            </li>
+
+            <!-- <li><a href="#" class="inactive">组织机构</a>
+                <ul style="display: inline;">
+                    <li><a href="#" class="inactive active">美协机关</a>
+                        <ul>
+                            <li><a href="#">办公室</a></li>
+                            <li><a href="#">人事处</a></li>
+                            <li><a href="#">组联部</a></li>
+                            <li><a href="#">外联部</a></li>
+                            <li><a href="#">研究部</a></li>
+                            <li><a href="#">维权办</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="inactive active">中国文联美术艺术中心</a>
+                        <ul>
+                            <li><a href="#">综合部</a></li>
+                            <li><a href="#">大型活动部</a></li>
+                            <li><a href="#">展览部</a></li>
+                            <li><a href="#">艺委会工作部</a></li>
+                            <li><a href="#">信息资源部</a></li>
+                            <li><a href="#">双年展办公室</a></li>
+                        </ul>
+                    </li>
+                    <li class="last"><a href="#">《美术》杂志社</a></li>
+                </ul>
+            </li> -->
+
+
+            <li><a href="/admin/manager/loginout" class="inactive">退出登录</a>
+                <!-- <ul style="display: inline;">
+                    <li><a href="#" class="inactive active">美协机关</a>
+                        <ul>
+                            <li><a href="#">办公室</a></li>
+                            <li><a href="#">人事处</a></li>
+                            <li><a href="#">组联部</a></li>
+                            <li><a href="#">外联部</a></li>
+                            <li><a href="#">研究部</a></li>
+                            <li><a href="#">维权办</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="inactive active">中国文联美术艺术中心</a>
+                        <ul>
+                            <li><a href="#">综合部</a></li>
+                            <li><a href="#">大型活动部</a></li>
+                            <li><a href="#">展览部</a></li>
+                            <li><a href="#">艺委会工作部</a></li>
+                            <li><a href="#">信息资源部</a></li>
+                            <li><a href="#">双年展办公室</a></li>
+                        </ul>
+                    </li>
+                    <li class="last"><a href="#">《美术》杂志社</a></li>
+                </ul> -->
+            </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        <iframe id="rigthIframe" style="position:absolute;top:0px;width:88%;height:100%;" frameborder="0" src="/admin/commonapi/interfaceAnalyze"></iframe>
+    </div>
+
+</body>
+
+</html>

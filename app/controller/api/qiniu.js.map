@@ -1,0 +1,46 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/controller/api/qiniu.js"
+    ],
+    "names": [
+        "Base",
+        "require",
+        "qiniu",
+        "module",
+        "exports",
+        "indexAction",
+        "display",
+        "getTokenAction",
+        "console",
+        "log",
+        "config_qiniu",
+        "config",
+        "bucket",
+        "accessKey",
+        "access_key",
+        "secretKey",
+        "secret_key",
+        "mac",
+        "auth",
+        "digest",
+        "Mac",
+        "options",
+        "scope",
+        "putPolicy",
+        "rs",
+        "PutPolicy",
+        "uploadToken",
+        "obj",
+        "Object",
+        "uptoken",
+        "ctx",
+        "json",
+        "callbackAction"
+    ],
+    "mappings": ";;AAAA,MAAMA,OAAOC,QAAQ,YAAR,CAAb;AACA,MAAMC,QAAQD,QAAQ,OAAR,CAAd;;AAGAE,OAAOC,OAAP,GAAiB,cAAcJ,IAAd,CAAmB;AAClCK,gBAAc;AACZ,WAAO,KAAKC,OAAL,EAAP;AACD;;AAED;;;AAGMC,gBAAN,GAAuB;AAAA;;AAAA;AACrBC,cAAQC,GAAR,CAAY,qBAAZ;AACA,UAAIC,eAAe,MAAKC,MAAL,CAAY,OAAZ,CAAnB;AACA,UAAIC,SAASF,aAAaE,MAA1B;AACA,UAAIC,YAAWH,aAAaI,UAA5B;AACA,UAAIC,YAAYL,aAAaM,UAA7B;AACA,UAAIC,MAAM,IAAIf,MAAMgB,IAAN,CAAWC,MAAX,CAAkBC,GAAtB,CAA0BP,SAA1B,EAAqCE,SAArC,CAAV;;AAEA,UAAIM,UAAU;AACZC,eAAOV;AACP;AACA;AACA;AACA;AALY,OAAd;AAOA,UAAIW,YAAY,IAAIrB,MAAMsB,EAAN,CAASC,SAAb,CAAuBJ,OAAvB,CAAhB;AACA,UAAIK,cAAcH,UAAUG,WAAV,CAAsBT,GAAtB,CAAlB;AACA,UAAIU,MAAM,IAAIC,MAAJ,EAAV;AACAD,UAAIE,OAAJ,GAAcH,WAAd;AACA,aAAO,MAAKI,GAAL,CAASC,IAAT,CAAcJ,GAAd,CAAP;AAnBqB;AAoBtB;;AAEKK,gBAAN,GAAuB;AAAA;AACrBxB,cAAQC,GAAR,CAAY,qBAAZ;AACA,aAAO,UAAP;AAFqB;AAGtB;AAjCiC,CAApC",
+    "file": "../../../src/controller/api/qiniu.js",
+    "sourcesContent": [
+        "const Base = require('../base.js');\nconst qiniu = require('qiniu');\n\n\nmodule.exports = class extends Base {\n  indexAction() {\n    return this.display();\n  }\n\n  /**\n   * http://127.0.0.1:8360/api/qiniu/getToken\n   */\n  async getTokenAction() {\n    console.log('callbackAction.....');\n    var config_qiniu = this.config('qiniu');\n    var bucket = config_qiniu.bucket;\n    var accessKey =config_qiniu.access_key;\n    var secretKey = config_qiniu.secret_key;\n    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);\n\n    var options = {\n      scope: bucket,\n      // returnBody: '{\"key\":\"$(key)\",\"hash\":\"$(etag)\",\"fsize\":$(fsize),\"bucket\":\"$(bucket)\",\"name\":\"$(x:name)\"}',\n      // callbackUrl: 'http://127.0.0.1:8360/api/qiniu/callback',\n      // callbackBody: 'key=$(key)&hash=$(etag)&bucket=$(bucket)&fsize=$(fsize)&name=$(x:name)',\n      // callbackBodyType: 'application/json'\n    };\n    var putPolicy = new qiniu.rs.PutPolicy(options);\n    var uploadToken = putPolicy.uploadToken(mac);\n    var obj = new Object();\n    obj.uptoken = uploadToken;\n    return this.ctx.json(obj);\n  }\n\n  async callbackAction() {\n    console.log('callbackAction.....');\n    return 'callback';\n  }\n};"
+    ]
+}

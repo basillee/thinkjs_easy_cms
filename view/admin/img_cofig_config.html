@@ -1,0 +1,233 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../../static/css/common/common.css">
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/qiniu-js@2.5.2/dist/qiniu.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/common/icon.css">
+    <script type="text/javascript" src="../../static/js/common/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../static/js/common/jquery.edatagrid.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#dg').edatagrid({
+                url: '/admin/imgapi/getimgsayConfigData', //查询数据列表
+                saveUrl: '/admin/imgapi/saveimgSayConfig', //新增保存一个数据
+                updateUrl: '/admin/imgapi/updateimgSayConfig', //更新一个数据
+                destroyUrl: '/admin/imgapi/deleteimgSay' //删除一个数据
+            });
+
+            $('#dg').edatagrid({
+                onError: function (index, row) {
+                    alert(row.msg);
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <div id="page_title">
+        图片配置
+    </div>
+    <div id="box2" styple="margin-left:20px;margin: 16px;">
+        <input type="file" id="fileInput" name="file" multiple="multiple" accept="image/*">
+        <select id="select_img_type">
+            <option value="1">类型1</option>
+            <option value="2">类型2</option>
+            <option value="3">类型3</option>
+        </select>
+        <button id="btn_start_upload">开始上传</button>
+        <button id="btn_clear_upload">清空上传列表</button>
+    </div>
+    <div id="progress_area" style="height: 220px;width:100%;border:1px solid black; overflow:auto;">
+    </div>
+
+    <table id="dg" title="图片配置" style="width:100%;height:300px;margin: 16px;" toolbar="#toolbar" pagination="true"
+        idField="id" rownumbers="true" fitColumns="true" singleSelect="true">
+        <thead>
+            <tr>
+                <th field="id" width="15px" editor="{type:'numberbox',options:{required:false}}">ID</th>
+                <th field="img_url" width="120px" editor="{type:'validatebox',options:{required:true}}">图片地址</th>
+                <th field="view_numbs" width="15px" editor="{type:'validatebox',options:{required:false}}">浏览量</th>
+                <th field="tap_liked_numbs" width="15px" editor="{type:'validatebox',options:{required:false}}">喜欢量</th>
+                <th field="create_date" width="25px" editor="{type:'validatebox',options:{required:false}}">创建时间</th>
+                <th field="last_modify_date" width="25px" editor="{type:'validatebox',options:{required:false}}">修改时间</th>
+                <th field="img_type" width="15px" editor="{type:'validatebox',options:{required:true}}">图片类型</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="toolbar">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#dg').edatagrid('addRow')">新增</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="javascript:$('#dg').edatagrid('destroyRow')">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:$('#dg').edatagrid('saveRow')">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="javascript:$('#dg').edatagrid('cancelRow')">取消</a>
+    </div>
+
+    <div style="width:100%;text-align:center; margin-top: 16px;">温馨提示：双击可编辑</div>
+    <script>
+        var token = '';
+        var domain = `{{config_domain}}`;
+        console.log('domain ===> ' + domain);
+        $.get("/api/qiniu/getToken", function (data, status) { //这里的token需要自己写一个接口动态生成，因为安全考虑而且token是有效期的
+            console.log(JSON.stringify(data));
+            token = data.uptoken;
+            console.log(token);
+        });
+
+
+        var fileInput = document.querySelector("#fileInput");
+        var isFilesChanged = false;
+        fileInput.addEventListener("change", function (event) {
+            isFilesChanged = true;
+            console.log('fileInput.addEventListener');
+        }, false);
+
+        $('#btn_start_upload').click(function () {
+            if (isFilesChanged) {
+                uploadMutileFile(fileInput);
+                isFilesChanged = false; //防止重复点击，上传重复图片
+            }
+        });
+        $('#btn_clear_upload').click(function () {
+            document.getElementById("progress_area").innerHTML = "";
+        });
+
+        function uploadMutileFile(files) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                var file = fileInput.files[i];
+                // name: 文件名.
+                // lastModified: UNIX timestamp 形式的最后修改时间.
+                // lastModifiedDate:  Date 形式的最后修改时间.
+                // size: 文件的字节大小.
+                // type: DOMString 文件的 MIME 类型.
+                console.log('name = ' + file.name + ' lastModified = ' +
+                    ' lastModifiedDate = ' + file.lastModifiedDate +
+                    ' size = ' + file.size +
+                    ' type = ' + file.type + '\n');
+                //在for循环中增加元素
+                // <div style="text-align:left;margin-left: 20px;">
+                //     <label id="file_name"></label>
+                //     <label style="">上传进度：</label>
+                //     <progress style="" max="100" value="0" id="pg"></progress>
+                //     <label id="progress_value">0%</label>
+                //     <label>图片地址：</label>
+                //     <label id="file_url"></label>
+                // </div> 
+                var parent = document.getElementById('progress_area');
+                var divChild = document.createElement('div');
+                var labelFileName = document.createElement('label');
+                var labelUploadProgress = document.createElement('label');
+                var progress = document.createElement('progress');
+                progress.setAttribute('max', 100);
+                progress.setAttribute('value', 0);
+                var progressValue = document.createElement('label');
+                var resultLabel = document.createElement('label');
+                var inserResultLabel = document.createElement('label');
+
+                divChild.appendChild(labelFileName);
+                divChild.appendChild(labelUploadProgress);
+                divChild.appendChild(progress);
+                divChild.appendChild(progressValue);
+                divChild.appendChild(resultLabel);
+                divChild.appendChild(inserResultLabel);
+                parent.appendChild(divChild);
+
+
+                labelFileName.innerText = file.name;
+                labelUploadProgress.innerText = '上传进度：';
+                //设置相关的css布局
+                labelFileName.style.width = '50px';
+                labelFileName.style.textOverflow = 'ellipsis';
+                labelFileName.style.overflow = 'hidden';
+                labelFileName.style.whiteSpace = 'nowrap';
+
+                labelUploadProgress.style.marginLeft = '8px';
+                progress.style.marginLeft = '8px';
+                resultLabel.style.marginLeft = '8px';
+                inserResultLabel.style.marginLeft ='8px';
+
+                uploadFile(file, progress, progressValue, resultLabel,inserResultLabel);
+            }
+        }
+
+
+        function getModifiedName(file) {
+            var fileName = '';
+            var currentDate = new Date();
+            fileName = 'img/' +
+                currentDate.getFullYear() + '_' +
+                currentDate.getMonth() + 1 + '_' +
+                currentDate.getDate() + '_' +
+                currentDate.getHours() + '_' +
+                currentDate.getMinutes() + '_' +
+                currentDate.getSeconds() + '_' +
+                currentDate.getMilliseconds() + '_' +
+                file.name;
+            return fileName;
+        }
+
+        function uploadFile(file, progress, progressValue, resultLabel,inserResultLabel) {
+            var key = getModifiedName(file);
+            var config = {
+                useCdnDomain: true,
+            };
+            var putExtra = {
+                fname: "",
+                params: {},
+                mimeType: [] || null
+            };
+            var observable = qiniu.upload(file, key, token, putExtra, config);
+            // observer: observer 为一个 object，
+            // 用来设置上传过程的监听函数，有三个属性 next、error、complete:
+            var observer = {
+                next(res) {
+                    console.log('in observer next:')
+                    // var pg = document.getElementById('pg');
+                    // var labelProgress = document.getElementById('progress_value');
+                    // var fileName = document.getElementById('file_name');
+                    progress.value = res.total.percent;
+                    progressValue.innerText = res.total.percent.toFixed(0) + '%';
+                    console.log(res.total.loaded + '====>' + res.total.total + '====>' + res.total.percent);
+                },
+                error(err) {
+                    console.log('in observer error:')
+                    console.log(JSON.stringify(err));
+                    resultLabel.innerText = '上传失败';
+                },
+                complete(res) {
+                    console.log('in observer complete:')
+                    console.log(JSON.stringify(res));
+                    // var resultLabel = document.getElementById('file_url');
+                    // resultLabel.innerText = '' + res.key; //加上自己在七牛配置的domian则可以获得上传后七牛空间的url地址了
+                    resultLabel.innerText = '上传成功';
+                    console.log('domain + res.key = ' + domain + res.key);
+                    var img_url = domain + res.key;
+                    img_type = $('#select_img_type').val();
+                    var postParams = {
+                        img_url: img_url,
+                        img_type: img_type
+                    };
+                    console.log('in login click....')
+                    $.post('/admin/imgapi/insertUrlToimgsayData', postParams, function (data, textStatus) {
+                        console.log(data.errno + " " + textStatus);
+                        if (data.result_code == 200) {
+                            inserResultLabel.innerText = '插入数据库成功'
+                        } else {
+                            inserResultLabel.innerText = '插入数据库失败'
+                        }
+                    });
+                }
+            }
+            var subscription = observable.subscribe(observer) // 上传开始
+            // or
+            // var subscription = observable.subscribe(next, error, complete) // 这样传参形式也可以
+
+            // subscription.unsubscribe() // 上传取消
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>接口调用情况</title>
+    <link rel="stylesheet" href="../../static/css/common/common.css">
+    <script src="../../static/js/common/echarts.common.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: "宋体", "微软雅黑";
+
+        }
+
+
+        #container {
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+        }
+
+        #main_left {
+            width: 50%;
+            float: left;
+            padding: 10px;
+        }
+
+        #main_right {
+            width: 40%;
+            height: 300px;
+            text-align: center;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .main {
+            height: 300px;
+            position: relative;
+        }
+
+        .dateButton {
+            height: 25px;
+            background-color: transparent;
+            padding: 5px;
+            margin: 10px;
+            width: 120px;
+            border-radius: 16px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="page_title">
+        接口调用情况数据分析
+    </div>
+
+    <div style="width:100%;text-align:center; vertical-align:middle;">
+        <button class="dateButton" onclick="{location.href='/admin/commonapi/interfaceAnalyze?type=7'}">最近7天</button>
+        <button class="dateButton" onclick="{location.href='/admin/commonapi/interfaceAnalyze?type=30'}">最近30天</button>
+        <button class="dateButton" onclick="{location.href='/admin/commonapi/interfaceAnalyze?type=60'}">最近60天</button>
+    </div>
+
+    <div id="container">
+        <div class="main" id="main_left"></div>
+
+        <div class="main" id="main_right"></div>
+    </div>
+
+
+</body>
+<!-- 折线图 -->
+<script>
+    var myChart = echarts.init(document.getElementById('main_left'));
+    // 指定图表的配置项和数据
+    //第一步接口名称
+    var interfaceNameArr = '{{interfaceNameArr}}';
+    console.log('interfaceNameArr = ' + interfaceNameArr);
+    var dataArr = interfaceNameArr.split(',');
+    console.log('dataArr = ' + dataArr);
+    //第二步x轴改成日期
+    var xDateArr = '{{xDateArr}}';
+    var dateArr = xDateArr.split(',');
+    console.log('dateArr = ' + dataArr)
+    //第三步获取值
+    var resultDataArr = '{{resultDataArr}}'.replace(/&quot;/g, '"');
+    var seriesValue = JSON.parse(resultDataArr);
+    console.log('seriesValue = ' + JSON.stringify(seriesValue));
+    var option = {
+        // title: {
+        //     text: '折线图堆叠'
+        // },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: dataArr
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: dateArr
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: seriesValue
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+<!-- 饼图 -->
+<script>
+    var myChart = echarts.init(document.getElementById('main_right'));
+    var pieResultArr = '{{pieResultArr}}'.replace(/&quot;/g, '"');
+    var seriesValue = JSON.parse(pieResultArr);
+    var pieMax = parseInt('{{pieMax}}');
+    var pieMin = parseInt('{{pieMin}}');
+    console.log('pie seriesValue = ' + JSON.stringify(seriesValue));
+    // 指定图表的配置项和数据
+    option = {
+        backgroundColor: '#2c343c',
+
+        title: {
+            text: '',
+            left: 'center',
+            top: 20,
+            textStyle: {
+                color: '#ccc'
+            }
+        },
+
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+
+        visualMap: {
+            show: false,
+            min: pieMin,
+            max: pieMax,
+            inRange: {
+                // colorLightness: [0, 1]
+                color: ['lightskyblue', 'yellow', 'orangered']
+            }
+        },
+        series: [{
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: seriesValue.sort(function (a, b) {
+                return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+                normal: {
+                    textStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    smooth: 0.2,
+                    length: 10,
+                    length2: 20
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#c23531',
+                    shadowBlur: 200,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            },
+
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+</html>

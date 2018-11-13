@@ -1,0 +1,34 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/controller/util/utils.js"
+    ],
+    "names": [
+        "dbInterfaceCallCount",
+        "think",
+        "model",
+        "utils",
+        "interfaceCallCount",
+        "_interfaceName",
+        "date",
+        "Date",
+        "toLocaleDateString",
+        "isEmpty",
+        "where",
+        "visitDate",
+        "interfaceName",
+        "find",
+        "console",
+        "log",
+        "add",
+        "visitNumb",
+        "increment",
+        "module",
+        "exports"
+    ],
+    "mappings": ";;AAAA;;;AAGA,MAAMA,uBAAuBC,MAAMC,KAAN,CAAY,4BAAZ,CAA7B;AACA,IAAIC,QAAQ;AACR;;;;AAIAC;AAAA,qCAAoB,WAAkCC,cAAlC,EAAkD;AAClE,gBAAIC,OAAO,IAAIC,IAAJ,GAAWC,kBAAX,EAAX;AACA,gBAAIC,UAAU,MAAMT,qBAAqBU,KAArB,CAA2B;AAC3CC,2BAAWL,IADgC;AAE3CM,+BAAeP;AAF4B,aAA3B,EAGjBQ,IAHiB,EAApB;AAIAC,oBAAQC,GAAR,CAAY,sBAAsBT,IAAtB,GAA6B,uBAA7B,GAAuDL,MAAMQ,OAAN,CAAcA,OAAd,CAAnE;AACA,gBAAIR,MAAMQ,OAAN,CAAcA,OAAd,CAAJ,EAA4B;AAAE;AAC1BK,wBAAQC,GAAR,CAAY,0BAAZ;AACAf,qCAAqBgB,GAArB,CAAyB;AACrBL,+BAAWL,IADU;AAErBM,mCAAeP,cAFM;AAGrBY,+BAAW;AAHU,iBAAzB;AAKH,aAPD,MAOO;AAAE;AACLH,wBAAQC,GAAR,CAAY,8BAAZ;AACAf,qCAAqBU,KAArB,CAA2B;AACvBC,+BAAWL,IADY;AAEvBM,mCAAeP;AAFQ,iBAA3B,EAGGa,SAHH,CAGa,WAHb,EAG0B,CAH1B;AAIH;AACJ,SArBD;;AAAA,iBAAmCd,kBAAnC;AAAA;AAAA;;AAAA,eAAmCA,kBAAnC;AAAA;AALQ,CAAZ;AA4BAe,OAAOC,OAAP,GAAiBjB,KAAjB",
+    "file": "../../../src/controller/util/utils.js",
+    "sourcesContent": [
+        "/**\n * 工具类\n */\nconst dbInterfaceCallCount = think.model('think_interface_call_count');\nvar utils = {\n    /**\n     * 内部接口访问量统计到数据库中\n     * @param {*} _interfaceName \n     */\n    interfaceCallCount: async function interfaceCallCount(_interfaceName) {\n        var date = new Date().toLocaleDateString();\n        var isEmpty = await dbInterfaceCallCount.where({\n            visitDate: date,\n            interfaceName: _interfaceName\n        }).find();\n        console.log('currentDate is = ' + date + ' interface isEmpty = ' + think.isEmpty(isEmpty));\n        if (think.isEmpty(isEmpty)) { //否则增加一条当前日期当前接口的数据\n            console.log('interface data is empty.')\n            dbInterfaceCallCount.add({\n                visitDate: date,\n                interfaceName: _interfaceName,\n                visitNumb: 1\n            });\n        } else { //存在当前日期的当前接口数据则访问量加一\n            console.log('interface data is not empty.')\n            dbInterfaceCallCount.where({\n                visitDate: date,\n                interfaceName: _interfaceName\n            }).increment('visitNumb', 1);\n        }\n    }\n}\nmodule.exports = utils;"
+    ]
+}

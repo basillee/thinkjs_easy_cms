@@ -1,0 +1,103 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理员登录系统</title>
+
+<head>
+    <style>
+        body{ 
+        text-align:center;
+        background-image:url("../../static/image/admin/bg2.jpg");
+        background-position: center 0;
+        background-repeat:no-repeat; 
+        background-size:100% 100%;
+        -moz-background-size:100% 100%;
+    }
+    #loginBox{
+        width: 600px;
+        height: 150px;
+        /* background: gold; */
+        border: 1px solid gold;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: inline;
+    }
+
+    input{
+        height: 30px;
+    }
+
+    .item{
+        margin-left: 20px;
+    }
+
+</style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        function login(){
+    var userAccountValue = document.getElementById('inputUserAccount').value;
+    var passWordValue = document.getElementById('inputUserPassword').value;
+    var captCha = document.getElementById('capt_cha').value;
+    var postParams  = {userAccount:userAccountValue,
+        passWord:passWordValue,captCha,captCha};
+    console.log('in login click....');
+    $.post('/admin/manager/loginCheck',postParams,function(data,textStatus){
+        console.log(data.errno + " " + textStatus);
+        if(data.errno == 0){
+            location.href = '/admin/manager/operation';
+        }else if(data.errno == 1001){
+            alert('验证码错误');
+            var captImg = document.getElementById('capt_img');
+            captImg.src = '/admin/manager/getCaptcha?type='+Math.random();
+        }else{
+            alert('error account or password.');
+        }
+    });
+}
+</script>
+</head>
+
+<body>
+    <div id="loginBox">
+        <div>
+            <div style="float:left;height: 50px;margin-left: 8px;">
+                <label style="float:left;color: floralwhite;">用户名：</label><br>
+                <input type="text" id="inputUserAccount" placeholder="请输入用户名" />
+            </div>
+
+        </div>
+
+        <div class="item">
+            <div style="float: left;height: 50px;margin-left: 8px;">
+                <label style="float:left;color: floralwhite;">密码：</label><br>
+                <input type="password" id="inputUserPassword" placeholder="请输入密码" />
+            </div>
+        </div>
+
+        <div class="item">
+            <div style="float: left;height: 50px;">
+                <label style="float:left;color: floralwhite;"></label><br>
+                <img style="background:white;margin-left:8px;" id="capt_img" src="/admin/manager/getCaptcha" onclick="this.src='/admin/manager/getCaptcha?type='+Math.random()"/>
+            </div>
+
+        </div>
+
+        <div class="item">
+            <div style="float: left;height: 50px;margin-left: 8px;">
+                <label style="float:left;color: floralwhite;">验证码：</label><br>
+                <input type="text" id="capt_cha" placeholder="请输入密码" />
+            </div>
+        </div>
+        <div id="divUserAccout">
+            <button style="width:150px;height:35px;border-radius: 16px;
+            margin-top: 60px;
+            background: transparent;color: white;"
+                onclick="login()">登录</button>
+        </div>
+    </div>
+</body>
+
+</html>

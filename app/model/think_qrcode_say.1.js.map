@@ -1,0 +1,28 @@
+{
+    "version": 3,
+    "sources": [
+        "../../src/model/think_qrcode_say.1.js"
+    ],
+    "names": [
+        "module",
+        "exports",
+        "think",
+        "Model",
+        "getimgSayList",
+        "list",
+        "where",
+        "select",
+        "insertImgUrl",
+        "img_url",
+        "img_type",
+        "isEmpty",
+        "map",
+        "insertId",
+        "add"
+    ],
+    "mappings": ";;AAAA;;;AAGAA,OAAOC,OAAP,GAAiB,cAAcC,MAAMC,KAApB,CAA0B;;AAEjCC,iBAAN,GAAqB;AAAA;;AAAA;AACjB,gBAAIC,OAAO,MAAM,MAAKC,KAAL,GAAaC,MAAb,EAAjB;AACA,mBAAOF,IAAP;AAFiB;AAGpB;AACD;;;;;AAKMG,gBAAN,CAAmBC,OAAnB,EAA2BC,QAA3B,EAAoC;AAAA;;AAAA;AAChC,gBAAGR,MAAMS,OAAN,CAAcF,OAAd,CAAH,EAA0B;AACtB,uBAAO,KAAP;AACH;AACD,kBAAMG,MAAM,EAACH,SAAQA,OAAT,EAAiBC,UAASA,QAA1B,EAAZ;AACA,gBAAIG,WAAW,MAAM,OAAKC,GAAL,CAASF,GAAT,CAArB;AACA,gBAAGC,YAAU,CAAb,EAAe;AACX,uBAAO,IAAP;AACH,aAFD,MAEK;AACD,uBAAO,KAAP;AACH;AAV+B;AAWnC;AAtBsC,CAA3C",
+    "file": "../../src/model/think_qrcode_say.1.js",
+    "sourcesContent": [
+        "/**\n * 码上说数据库配置模块\n */\nmodule.exports = class extends think.Model {\n\n    async getimgSayList(){\n        var list = await this.where().select();\n        return list;\n    }\n    /**\n     * 插入图片url到数据库\n     * @param {*} img_url \n     * @param {*} img_type \n     */\n    async insertImgUrl(img_url,img_type){\n        if(think.isEmpty(img_url)){\n            return false;\n        }\n        const map = {img_url:img_url,img_type:img_type};\n        let insertId = await this.add(map);\n        if(insertId>=0){\n            return true;\n        }else{\n            return false;\n        }\n    }\n};"
+    ]
+}
