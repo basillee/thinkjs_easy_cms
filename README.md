@@ -55,7 +55,7 @@ thinkjs_easy_cms imac$ npm start
  ![Alt](https://github.com/basillee/thinkjs_easy_cms/blob/master/接口统计展示.jpg)
  ![Alt](https://github.com/basillee/thinkjs_easy_cms/blob/master/七牛云图片上传同时写入到数据库中.png)
  
-##本人对于nodejs也是半路出家，之前做的事android开发。有issue欢迎大家指出修改。本着帮助更多和我一样想学习后台技术的同学，故开源此代码帮助更多同学。同时希望成为thinkjs这么好的开源框架的一个简单学习案例。
+## 本人对于nodejs也是半路出家，之前做的事android开发。有issue欢迎大家指出修改。本着帮助更多和我一样想学习后台技术的同学，故开源此代码帮助更多同学。同时希望成为thinkjs这么好的开源框架的一个简单学习案例。
  
  
 
